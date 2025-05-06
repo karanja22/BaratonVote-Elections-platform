@@ -41,8 +41,7 @@ class RegistrationSerializer(serializers.Serializer):
             student_id=student.student_id,
             first_name=student.first_name,
             last_name=student.last_name,
-            department=student.department.name,  # or adjust field as needed
-            gpa=student.gpa,
+            department=student.department.name, 
             year_of_study=student.year_of_study,
             tribe=student.tribe,
             gender=student.gender,
@@ -51,8 +50,16 @@ class RegistrationSerializer(serializers.Serializer):
         return user
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    student_id = serializers.CharField()
+    password = serializers.CharField()
+
     def validate(self, attrs):
-        attrs['username'] = attrs.get('student_id')  # maps student_id to username
+
+        student_id = attrs.get('student_id')
+        if not student_id:
+            raise serializers.ValidationError("Student ID is required.")
+
+        attrs['username'] = attrs.get('student_id') 
         return super().validate(attrs)
 
     @classmethod

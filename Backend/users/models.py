@@ -17,7 +17,6 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     department = models.CharField(max_length=100)
-    gpa = models.DecimalField(max_digits=3, decimal_places=2)
     year_of_study = models.IntegerField()
     tribe = models.CharField(max_length=50)
     gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
