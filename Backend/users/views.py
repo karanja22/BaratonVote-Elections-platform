@@ -1,9 +1,12 @@
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import RegistrationSerializer, CustomTokenObtainPairSerializer
+from .serializers import RegistrationSerializer, CustomTokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView as SimpleJWTTokenRefreshView
+
+from django.contrib.auth.models import User
 
 
 class RegistrationView(generics.CreateAPIView):
@@ -20,3 +23,7 @@ class RegistrationView(generics.CreateAPIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+class TokenRefreshView(SimpleJWTTokenRefreshView):
+    serializer_class = TokenRefreshSerializer

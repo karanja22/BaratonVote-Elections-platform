@@ -1,8 +1,12 @@
 from rest_framework import serializers
 from .models import User
-from users.models import Student
+from .registry import Student
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer as SimpleJWTTokenRefreshSerializer
 
+
+class TokenRefreshSerializer(SimpleJWTTokenRefreshSerializer):
+    pass
 
 
 class RegistrationSerializer(serializers.Serializer):
