@@ -35,10 +35,9 @@ class UserProfile(models.Model):
     Linked to the CustomUser model.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    # Additional fields can be added here if needed
 
     def __str__(self):
-        return self.user.username  # Return username for better readability
+        return self.user.username 
 
 class AuthenticationLog(models.Model):
     """
@@ -46,16 +45,28 @@ class AuthenticationLog(models.Model):
     Useful for auditing and security monitoring.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # Timestamp for when the login attempt was made
     login_time = models.DateTimeField(auto_now_add=True)
-    # Timestamp for when the user logged out
     logout_time = models.DateTimeField(null=True, blank=True)
-    # IP address from which the user logged in
     ip_address = models.GenericIPAddressField(null=True, blank=True)
-    # Indicates if the login attempt was successful
     success = models.BooleanField(default=True)
-    # Additional details about the login attempt can be stored here
     details = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.login_time} - {'Successful' if self.success else 'Failed'}"
+
+
+
+class Student(models.Model):
+    student_id = models.CharField(max_length=20, unique=True)
+    email = models.EmailField()
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    department = models.CharField(max_length=100)
+    gpa = models.DecimalField(max_digits=3, decimal_places=2)
+    year_of_study = models.IntegerField()
+    tribe = models.CharField(max_length=50)
+    gender = models.CharField(max_length=10)
+
+    class Meta:
+        managed = False 
+        db_table = 'students'

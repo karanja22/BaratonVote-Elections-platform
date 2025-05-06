@@ -1,17 +1,22 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .models import User
-from .serializers import UserSerializer
-from django.http import HttpResponse
+from .serializers import RegistrationSerializer, CustomTokenObtainPairSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-def home(request):
-    return HttpResponse("Welcome to the Baraton Vote Elections Platform!")
+
+class RegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    # Optionally override this view to customize token response
-    pass
-
-class TokenRefreshView(TokenRefreshView):
-    pass
+    serializer_class = CustomTokenObtainPairSerializer
