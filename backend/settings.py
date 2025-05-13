@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 ]
 
+AUTH_USER_MODEL = 'users.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,6 +84,7 @@ DATABASES = {
 
 
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -103,6 +106,12 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'backend.authentication_backend.StudentIDAuthBackend', 
+    'django.contrib.auth.backends.ModelBackend', 
+]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

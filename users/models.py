@@ -1,11 +1,8 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from .registry import Student
 
 class User(AbstractUser):
-    """
-    Custom User model that extends the default Django User model.
-    This allows for additional fields relevant to the application.
-    """
     ROLE_CHOICES = (
         ('admin', 'Admin'),
         ('voter', 'Voter'),
@@ -13,15 +10,7 @@ class User(AbstractUser):
     )
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='voter')
-    student_id = models.CharField(max_length=20, unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    department = models.CharField(max_length=100)
-    gpa = models.DecimalField(max_digits=3, decimal_places=2)
-    year_of_study = models.IntegerField()
-    tribe = models.CharField(max_length=50)
-    gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
-
+    student = models.OneToOneField('Student', on_delete=models.CASCADE, null=True,blank=True)
     groups = models.ManyToManyField(Group, related_name='custom_user_groups', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions', blank=True)
 
